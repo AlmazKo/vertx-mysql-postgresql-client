@@ -5,7 +5,7 @@
   <parent>
     <groupId>io.vertx</groupId>
     <artifactId>vertx-ext-parent</artifactId>
-    <version>14</version>
+    <version>15</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -16,9 +16,9 @@
   <name>Vert.x MySQL/PostgreSQL Client</name>
 
   <properties>
-    <stack.version>3.0.0-SNAPSHOT</stack.version>
+    <stack.version>3.0.0</stack.version>
     <scala.version>2.11.4</scala.version>
-    <asyncdriver.version>0.2.15</asyncdriver.version>
+    <asyncdriver.version>0.2.16</asyncdriver.version>
   </properties>
 
   <dependencyManagement>
