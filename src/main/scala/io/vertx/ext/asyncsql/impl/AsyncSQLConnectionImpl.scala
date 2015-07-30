@@ -1,6 +1,7 @@
 package io.vertx.ext.asyncsql.impl
 
 import com.github.mauricio.async.db
+import com.github.mauricio.async.db.mysql.MySQLQueryResult
 import com.github.mauricio.async.db.{Connection, QueryResult, RowData}
 import io.vertx.core.json.JsonArray
 import io.vertx.core.logging.{LoggerFactory, Logger}
@@ -131,7 +132,16 @@ class AsyncSQLConnectionImpl(connection: Connection, pool: AsyncConnectionPool)(
   }
 
   private def queryResultToUpdateResult(qr: QueryResult): UpdateResult = {
-    new UpdateResult(qr.rowsAffected.toInt, qr.rows.map(rs => new JsonArray(rs.columnNames.toList.asJava)).getOrElse(new JsonArray()))
+
+    var keys = new JsonArray
+
+    if (qr.isInstanceOf[MySQLQueryResult]) {
+      keys.add(qr.rowsAffected)
+    } else {
+      keys = qr.rows.map(rs => new JsonArray(rs.columnNames.toList.asJava)).getOrElse(new JsonArray())
+    }
+
+    new UpdateResult(qr.rowsAffected.toInt, keys)
   }
 
   private def queryResultToResultSet(qr: QueryResult): ResultSet = {
