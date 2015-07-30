@@ -135,10 +135,9 @@ class AsyncSQLConnectionImpl(connection: Connection, pool: AsyncConnectionPool)(
 
     var keys = new JsonArray
 
-    if (qr.isInstanceOf[MySQLQueryResult]) {
-      keys.add(qr.rowsAffected)
-    } else {
-      keys = qr.rows.map(rs => new JsonArray(rs.columnNames.toList.asJava)).getOrElse(new JsonArray())
+    qr match {
+      case myr: MySQLQueryResult => keys.add(myr.lastInsertId)
+      case _ => keys = qr.rows.map(rs => new JsonArray(rs.columnNames.toList.asJava)).getOrElse(new JsonArray())
     }
 
     new UpdateResult(qr.rowsAffected.toInt, keys)
